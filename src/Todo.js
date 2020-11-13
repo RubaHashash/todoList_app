@@ -12,18 +12,19 @@ class Todo extends Component{
            list:[],
            id:'',
            value: '',
-           completed: ''
+           completed: '',
+           showInput: false
           }
 
           this.handleChange = this.handleChange.bind(this)
     }
 
-    // completedStyle = {
-    //     fontStyle: "italic",
-    //     color: "#cdcdcd",
-    //     textDecoration: "line-through"
+    completedStyle = {
+        fontStyle: "italic",
+        color: "#cdcdcd",
+        textDecoration: "line-through"
 
-    // }
+    }
 
     handleChange(id){
         this.setState(prevState => {
@@ -48,7 +49,7 @@ class Todo extends Component{
         const Items={
             id:uuid.v4(),
             value: this.input.current.value,
-            completed: "true"
+            completed: "false"
         };
 
         if(localStorage.getItem('list')==null){
@@ -115,7 +116,11 @@ clearTask = () =>{
     });
 }
 
-
+operation(){
+    this.setState({
+        showInput: !this.state.showInput
+    })
+}
     render() {
         return (
             <div className="main-container">
@@ -132,11 +137,29 @@ clearTask = () =>{
                                         <li key={item.id}> 
                                         <div   className="todo-div">
                                         <div   className="todo-div">
-                                            <input type="checkbox" onChange={(event)=>this.handleChange(item.id)}></input>
-                                            <input  className="input-view" type="text" id={item.id} value={item.value} onChange={(e)=>{this.editTask(item.id,e.target.value)}}/>
-                                            {/* <label style={!item.completed ? this.completedStyle: null}>{item.value}</label> */}
+                                        <input type="checkbox" onChange={(event)=>this.handleChange(item.id)}></input>
+
+                                            {
+                                                this.state.showInput?
+                                                <div className="todo-div">
+                                                    <input  className="input-view" type="text" id={item.id} value={item.value} onChange={(e)=>{this.editTask(item.id,e.target.value)}}/>
+                                                    <button className="editbtn" type="button" onClick={() => this.operation()}>Done</button>
+                                                </div>
+                                                :null
+
+
+                                            }
+
+                                            {
+                                                !this.state.showInput?
+                                                <label style={!item.completed ? this.completedStyle: null}>{item.value}</label>
+                                                :null
+                                            }
+
+
                                         </div>
                                         <div className="btn-div">
+                                            <button className="editbtn" type="button" value="edit" onClick={() => this.operation()}>Edit</button>
                                             <button className="button" type="button" value="delete" data-key={index} onClick={this.deleteItem}>Delete</button>
                                         </div>
 
@@ -150,7 +173,7 @@ clearTask = () =>{
                             </ul>
 
                         <div className="btn-div">
-                            <button onClick={this.clearTask} className="button" >clear</button>
+                            <button onClick={this.clearTask} className="editbtn" >clear</button>
                         </div>
 
                 </div>
