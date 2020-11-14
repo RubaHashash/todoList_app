@@ -10,10 +10,8 @@ class Todo extends Component{
        this.input=React.createRef()
        this.state={
            list:[],
-           id:'',
-           value: '',
-           completed: '',
-           showInput: false
+           showInput: false,
+           value: ''
           }
 
           this.handleChange = this.handleChange.bind(this)
@@ -73,7 +71,8 @@ class Todo extends Component{
             }
           })
           this.setState({
-            list:list
+            list:list,
+            value:''
           })
           localStorage.setItem("list", JSON.stringify(list))        
     }
