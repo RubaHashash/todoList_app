@@ -27,20 +27,17 @@ class Todo extends Component{
     }
 
     handleChange(id){
-        this.setState(prevState => {
-            const updateList = prevState.list.map(todo => {
-                if(todo.id === id){
-                    todo.completed = !todo.completed
-                }
-                return todo
-            })
-            return {
-                list: updateList
-                
-            }
-        })
 
-        localStorage.setItem("list", JSON.stringify(this.state.list))
+        const list = JSON.parse(localStorage.getItem('list'))
+        list.map(item=>{
+            if(item.id===id){
+              item.completed=!item.completed;
+            }
+          })
+          this.setState({
+            list:list
+          })
+          localStorage.setItem("list", JSON.stringify(list))  
 
     }
 
@@ -121,6 +118,8 @@ operation(){
         showInput: !this.state.showInput
     })
 }
+
+
     render() {
         return (
             <div className="main-container">
